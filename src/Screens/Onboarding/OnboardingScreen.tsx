@@ -46,6 +46,34 @@ const OnboardingScreen = () => {
     },
   ];
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingBottom: 30,
+    },
+    slide: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 30,
+    },
+    pagination: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginVertical: 20,
+    },
+    dot: {
+      height: 8,
+      width: 8,
+      borderRadius: 4,
+      backgroundColor: '#ccc',
+      marginHorizontal: 5,
+    },
+    activeDot: {
+      backgroundColor: colors.Primary_color,
+      width: 18,
+    },
+  });
+
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const slideIndex = Math.round(event.nativeEvent.contentOffset.x / mobileW);
     setCurrentIndex(slideIndex);
@@ -149,31 +177,3 @@ const OnboardingScreen = () => {
 };
 
 export default OnboardingScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingBottom: 30,
-  },
-  slide: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 30,
-  },
-  pagination: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 20,
-  },
-  dot: {
-    height: 8,
-    width: 8,
-    borderRadius: 4,
-    backgroundColor: '#ccc',
-    marginHorizontal: 5,
-  },
-  activeDot: {
-    backgroundColor: '#000',
-    width: 18,
-  },
-});

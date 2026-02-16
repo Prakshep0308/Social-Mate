@@ -1,70 +1,62 @@
-import React, { ReactNode } from 'react';
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  StatusBar,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
+import { StatusBar, useColorScheme, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+import { mobileW } from '../utils/Utils';
 
-type LayoutProps = {
-  children: ReactNode;
-  scroll?: boolean;
-  padding?: boolean;
-};
-
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  scroll = false,
-  padding = true,
-}) => {
-  const { colors, dark } = useTheme();
-
-  const Container = scroll ? ScrollView : View;
-
+const Layout = ({ children, marginHorizontal, statusBarColor }: any) => {
+  const colors: any = useTheme().colors;
+  const scheme = useColorScheme();
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView
-      style={[styles.safeArea, { backgroundColor: colors.background }]}
-    >
-      <StatusBar
-        barStyle={dark ? 'light-content' : 'dark-content'}
-        backgroundColor={colors.background}
-      />
+    // <View style={{flex:1, backgroundColor: colors.Custom_Header_Color}}>
 
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: statusBarColor
+          ? statusBarColor
+          : colors.Background_Color,
+      }}
+      edges={['left', 'right']}
+    >
+      <View
+        style={{
+          flex: 1,
+          // paddingTop: 16,
+          backgroundColor: statusBarColor
+            ? statusBarColor
+            : colors.Background_Color,
+        }}
       >
-        <Container
-          contentContainerStyle={scroll ? styles.scrollContainer : undefined}
-          style={[styles.container, padding && styles.padding]}
+        <StatusBar
+          hidden={false}
+          translucent={true}
+          barStyle={'light-content'}
+          backgroundColor={'transparent'}
+          networkActivityIndicatorVisible={true}
+        />
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: colors.Body_Color,
+            marginHorizontal:
+              marginHorizontal === 0 ? marginHorizontal : mobileW * 0.04076,
+            // marginTop: mobileH * 0.01,
+            marginTop: insets.top,
+          }}
         >
           {children}
-        </Container>
-      </KeyboardAvoidingView>
+        </View>
+      </View>
     </SafeAreaView>
+
+    // </View>
   );
 };
 
 export default Layout;
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-  },
-  flex: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-  },
-  padding: {
-    paddingHorizontal: 20,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-  },
-});
