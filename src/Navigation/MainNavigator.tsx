@@ -1,10 +1,10 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from '../Screens/TabScreens/Home';
 import OnboardingScreen from '../Screens/Onboarding/OnboardingScreen';
 import Splash from '../Screens/SplashScreens/Splash';
 import Login from '../Screens/AuthScrens/Login';
 import SignUp from '../Screens/AuthScrens/SignUp';
+import TabNavigator from './TabNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +15,7 @@ const MainNavigator = () => {
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name={'tab'} component={TabNavigator} />
     </Stack.Navigator>
   );
 };

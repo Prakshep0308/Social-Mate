@@ -2,7 +2,6 @@
 import React, { useRef, useState } from 'react';
 import {
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -15,6 +14,7 @@ import { typography } from '../../theme/typography';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import MainButton from '../../Components/buttons/MainButton';
 import OutlineButton from '../../Components/buttons/OutlineButton';
+import Layout from '../../layouts/Layout';
 
 const OnboardingScreen = () => {
   const colors: any = useTheme().colors;
@@ -49,7 +49,6 @@ const OnboardingScreen = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      paddingBottom: 30,
     },
     slide: {
       justifyContent: 'center',
@@ -98,81 +97,77 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar
-        translucent
-        barStyle="dark-content"
-        backgroundColor="transparent"
-      />
+    <Layout>
+      <View style={styles.container}>
+        {/* Skip Button */}
 
-      {/* Skip Button */}
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={handleScroll}
+        >
+          {slides.map(item => (
+            <View key={item.key} style={[styles.slide, { width: mobileW }]}>
+              {item.icon}
+              <Text
+                style={{
+                  ...typography.Bold24,
+                  textAlign: 'center',
+                  marginTop: mobileH * (30 / mobileH),
+                  color: colors.Primary_text_color,
+                }}
+              >
+                {item.title}
+              </Text>
+              <Text
+                style={{
+                  ...typography.Regular14,
+                  textAlign: 'center',
+                  marginTop: mobileH * (10 / mobileH),
+                  color: colors.Secondary_text_color,
+                }}
+              >
+                {item.description}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
 
-      <ScrollView
-        ref={scrollViewRef}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={handleScroll}
-      >
-        {slides.map((item, index) => (
-          <View key={item.key} style={[styles.slide, { width: mobileW }]}>
-            {item.icon}
-            <Text
-              style={{
-                ...typography.Bold24,
-                textAlign: 'center',
-                marginTop: mobileH * (30 / mobileH),
-                color: colors.Primary_text_color,
-              }}
-            >
-              {item.title}
-            </Text>
-            <Text
-              style={{
-                ...typography.Regular14,
-                textAlign: 'center',
-                marginTop: mobileH * (10 / mobileH),
-                color: colors.Secondary_text_color,
-              }}
-            >
-              {item.description}
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
+        {/* Pagination Dots */}
+        <View style={styles.pagination}>
+          {slides.map((_, index) => (
+            <View
+              key={index}
+              style={[styles.dot, currentIndex === index && styles.activeDot]}
+            />
+          ))}
+        </View>
 
-      {/* Pagination Dots */}
-      <View style={styles.pagination}>
-        {slides.map((_, index) => (
-          <View
-            key={index}
-            style={[styles.dot, currentIndex === index && styles.activeDot]}
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            paddingHorizontal: 16,
+            gap: 10,
+          }}
+        >
+          {currentIndex !== slides.length - 1 && (
+            <OutlineButton
+              onPress={handleSkip}
+              title="Skip"
+              textColor={colors.Primary_color}
+            />
+          )}
+          <MainButton
+            onPress={handleNext}
+            title={currentIndex === slides.length - 1 ? 'Get Started' : 'Next'}
+            bgColor={colors.Primary_color}
           />
-        ))}
+        </View>
       </View>
-
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          paddingHorizontal: 16,
-          gap: 10,
-        }}
-      >
-        {currentIndex !== slides.length - 1 && (
-          <OutlineButton
-            onPress={handleSkip}
-            title="Skip"
-            textColor={colors.Primary_color}
-          />
-        )}
-        <MainButton
-          onPress={handleNext}
-          title={currentIndex === slides.length - 1 ? 'Get Started' : 'Next'}
-          bgColor={colors.Primary_color}
-        />
-      </View>
-    </View>
+    </Layout>
   );
 };
 

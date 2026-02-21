@@ -1,61 +1,61 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { StatusBar, useColorScheme, View } from 'react-native';
+import { StatusBar, View, StatusBarStyle } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import {
+  Edge,
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { mobileW } from '../utils/Utils';
+import { mobileH } from '../utils/Utils';
 
-const Layout = ({ children, marginHorizontal, statusBarColor }: any) => {
-  const colors: any = useTheme().colors;
-  const scheme = useColorScheme();
+type LayoutProps = {
+  children: React.ReactNode;
+  statusBarColor?: string;
+  barStyle?: StatusBarStyle;
+  safeAreaEdges?: Edge[];
+  contentBackgroundColor?: string;
+};
+
+const Layout = ({
+  children,
+  statusBarColor,
+  barStyle = 'dark-content',
+  safeAreaEdges = ['top', 'bottom', 'left', 'right'],
+  contentBackgroundColor,
+}: LayoutProps) => {
+  const colors = useTheme().colors as any;
   const insets = useSafeAreaInsets();
-  return (
-    // <View style={{flex:1, backgroundColor: colors.Custom_Header_Color}}>
+  const containerColor = statusBarColor ?? colors.background;
+  const contentColor = contentBackgroundColor ?? colors.background;
 
+  return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: statusBarColor
-          ? statusBarColor
-          : colors.Background_Color,
+        backgroundColor: containerColor,
+        paddingBottom: insets.bottom + mobileH * (60 / mobileH),
       }}
-      edges={['left', 'right']}
+      edges={safeAreaEdges}
     >
       <View
         style={{
           flex: 1,
-          // paddingTop: 16,
-          backgroundColor: statusBarColor
-            ? statusBarColor
-            : colors.Background_Color,
+          backgroundColor: contentColor,
         }}
       >
         <StatusBar
           hidden={false}
-          translucent={true}
-          barStyle={'light-content'}
-          backgroundColor={'transparent'}
+          translucent={false}
+          barStyle={barStyle}
+          backgroundColor={containerColor}
           networkActivityIndicatorVisible={true}
         />
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: colors.Body_Color,
-            marginHorizontal:
-              marginHorizontal === 0 ? marginHorizontal : mobileW * 0.04076,
-            // marginTop: mobileH * 0.01,
-            marginTop: insets.top,
-          }}
-        >
+        <View style={{ flex: 1, backgroundColor: contentColor }}>
           {children}
         </View>
       </View>
     </SafeAreaView>
-
-    // </View>
   );
 };
 

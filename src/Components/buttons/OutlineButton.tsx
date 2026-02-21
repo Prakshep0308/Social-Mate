@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { typography } from '../../theme/typography';
 import { useTheme } from '@react-navigation/native';
@@ -9,6 +9,7 @@ interface OutlineButtonProps {
   bgColor?: string;
   textColor?: string;
   onPress: () => void;
+  icon?: React.ReactNode;
 }
 
 const OutlineButton: React.FC<OutlineButtonProps> = ({
@@ -16,28 +17,34 @@ const OutlineButton: React.FC<OutlineButtonProps> = ({
   bgColor,
   textColor,
   onPress,
+  icon,
 }) => {
-  const colors: any = useTheme().colors;
+  const { colors }: any = useTheme();
+
   return (
     <TouchableOpacity
       style={[
         styles.tab,
         {
-          backgroundColor: bgColor ? bgColor : 'transparent',
-          borderWidth: 1,
+          backgroundColor: bgColor ?? 'transparent',
           borderColor: colors.Secondary_text_color,
         },
       ]}
       onPress={onPress}
+      activeOpacity={0.8}
     >
-      <Text
-        style={{
-          color: textColor ? textColor : '#000',
-          ...typography.Medium16,
-        }}
-      >
-        {title}
-      </Text>
+      <View style={styles.content}>
+        {icon && <View style={styles.icon}>{icon}</View>}
+
+        <Text
+          style={[
+            typography.Medium16,
+            { color: textColor ?? colors.Primary_text_color },
+          ]}
+        >
+          {title}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -48,8 +55,16 @@ const styles = StyleSheet.create({
   tab: {
     flex: 1,
     paddingVertical: 16,
-    alignItems: 'center',
+    borderWidth: 1,
     borderRadius: 40,
     justifyContent: 'center',
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    marginRight: 8,
   },
 });

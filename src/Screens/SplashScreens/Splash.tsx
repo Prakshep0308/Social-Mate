@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LogoIcon, MessageIcon, SplashIcon } from '../../utils/icons';
+import Layout from '../../layouts/Layout';
 
 const Splash = () => {
   const navigation = useNavigation<any>();
@@ -15,12 +16,7 @@ const Splash = () => {
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      <StatusBar
-        translucent
-        barStyle="light-content"
-        backgroundColor="transparent"
-      />
+    <Layout barStyle="dark-content">
       <View style={styles.centerContainer}>
         <SplashIcon />
         <View style={styles.row}>
@@ -28,14 +24,11 @@ const Splash = () => {
           <LogoIcon />
         </View>
       </View>
-    </View>
+    </Layout>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   centerContainer: {
     flex: 1,
     justifyContent: 'center',

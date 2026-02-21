@@ -1,4 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {
+  DimensionValue,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TextStyle,
+} from 'react-native';
 import React from 'react';
 import { typography } from '../../theme/typography';
 
@@ -7,25 +14,25 @@ interface MainButtonProps {
   bgColor?: string;
   textColor?: string;
   onPress: () => void;
+  paddV?: DimensionValue;
+  textStyle?: TextStyle; // ✅ better than string
 }
 
 const MainButton: React.FC<MainButtonProps> = ({
   title,
-  bgColor,
+  bgColor = '#000',
   onPress,
-  textColor,
+  textColor = '#fff',
+  paddV = 16,
+  textStyle,
 }) => {
   return (
     <TouchableOpacity
-      style={[styles.tab, { backgroundColor: bgColor ? bgColor : '#000' }]}
+      style={[styles.tab, { backgroundColor: bgColor, paddingVertical: paddV }]}
       onPress={onPress}
+      activeOpacity={0.8}
     >
-      <Text
-        style={{
-          color: textColor ? textColor : '#fff',
-          ...typography.Medium16,
-        }}
-      >
+      <Text style={[typography.Medium16, { color: textColor }, textStyle]}>
         {title}
       </Text>
     </TouchableOpacity>
@@ -37,7 +44,6 @@ export default MainButton;
 const styles = StyleSheet.create({
   tab: {
     flex: 1,
-    paddingVertical: 16,
     alignItems: 'center',
     borderRadius: 40,
     justifyContent: 'center',

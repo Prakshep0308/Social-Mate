@@ -1,19 +1,61 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import HomeHeader from '../../Components/HomeHeader';
-import CreatePostCard from '../../Components/CreatePostCard';
 import StoryItem from '../../Components/StoryItem';
 import PostCard from '../../Components/PostCard';
 import Layout from '../../layouts/Layout';
+import { Images } from '../../../assets';
 
 const Home = () => {
-  const { colors } = useTheme();
+  const { colors } = useTheme().colors;
 
   const stories = [
-    { id: 1, name: 'John', image: 'https://i.pravatar.cc/150?img=1' },
-    { id: 2, name: 'Smith', image: 'https://i.pravatar.cc/150?img=2' },
-    { id: 3, name: 'Ryan', image: 'https://i.pravatar.cc/150?img=3' },
+    {
+      id: 1,
+      name: 'Abdul',
+      image: Images.storyImage,
+      profileImage: 'https://i.pravatar.cc/100?img=1',
+      isAdd: true,
+    },
+    {
+      id: 2,
+      name: 'Chris',
+      image: Images.storyImage2,
+      profileImage: 'https://i.pravatar.cc/100?img=2',
+      isLive: true,
+    },
+    {
+      id: 3,
+      name: 'General',
+      image: Images.storyImage,
+      profileImage: 'https://i.pravatar.cc/100?img=3',
+    },
+    {
+      id: 4,
+      name: 'Ojogbon',
+      image: Images.storyImage3,
+      profileImage: 'https://i.pravatar.cc/100?img=4',
+    },
+    {
+      id: 5,
+      name: 'Chris',
+      image: Images.storyImage2,
+      profileImage: 'https://i.pravatar.cc/100?img=2',
+    },
+    {
+      id: 6,
+      name: 'General',
+      image: Images.storyImage,
+      profileImage: 'https://i.pravatar.cc/100?img=3',
+    },
+    {
+      id: 7,
+      name: 'Ojogbon',
+      image: Images.storyImage3,
+      profileImage: 'https://i.pravatar.cc/100?img=4',
+    },
   ];
 
   const posts = [
@@ -23,7 +65,7 @@ const Home = () => {
       time: '08:39 am',
       caption:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla natoque id aenean.',
-      image: 'https://picsum.photos/600/400',
+      image: Images.postImage2,
     },
     {
       id: 2,
@@ -31,7 +73,7 @@ const Home = () => {
       time: '08:39 am',
       caption:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla natoque id aenean.',
-      image: 'https://picsum.photos/600/400',
+      image: Images.postImage,
     },
     {
       id: 3,
@@ -62,23 +104,27 @@ const Home = () => {
   return (
     <Layout>
       <FlatList
-        contentContainerStyle={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: 16 }}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <View>
             <HomeHeader />
-            <CreatePostCard />
 
             {/* Stories */}
             <FlatList
-              data={stories}
               horizontal
               showsHorizontalScrollIndicator={false}
+              data={stories}
               keyExtractor={item => item.id.toString()}
               renderItem={({ item }) => (
-                <StoryItem name={item.name} image={item.image} />
+                <StoryItem
+                  name={item.name}
+                  image={item.image}
+                  profileImage={item.profileImage}
+                  isAdd={item.isAdd}
+                  isLive={item.isLive}
+                />
               )}
-              style={{ marginBottom: 20 }}
             />
           </View>
         }

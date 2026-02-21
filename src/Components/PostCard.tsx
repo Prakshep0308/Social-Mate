@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { CommentIcon, LikeIcon, SaveIcon, ShareIcon } from '../utils/icons';
 import { typography } from '../theme/typography';
+import { getCardShadow } from '../theme/shadows';
+import { mobileH } from '../utils/Utils';
 
 interface Props {
   name: string;
@@ -17,28 +19,29 @@ const PostCard: React.FC<Props> = ({ name, time, caption, image }) => {
   const styles = StyleSheet.create({
     card: {
       borderRadius: 16,
-      padding: 14,
-      borderWidth: 1,
+      paddingBottom: 10,
+      borderWidth: 0.5,
+      borderColor: colors.Border_color,
       marginBottom: 20,
       color: colors.Secondary_text_color,
+      ...getCardShadow(colors.Black_color),
     },
     header: {
       flexDirection: 'row',
-      marginBottom: 10,
+      padding: 10,
     },
     avatar: {
       width: 40,
       height: 40,
       borderRadius: 20,
-      marginRight: 17,
+      marginRight: 15,
     },
     caption: {
-      marginBottom: 10,
+      paddingHorizontal: 10,
     },
     postImage: {
       width: '100%',
-      height: 200,
-      borderRadius: 12,
+      height: mobileH * (300 / mobileH),
     },
     icons: {
       display: 'flex',
@@ -51,7 +54,7 @@ const PostCard: React.FC<Props> = ({ name, time, caption, image }) => {
     footer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginTop: 15,
+      padding: 10,
     },
   });
 
@@ -59,7 +62,7 @@ const PostCard: React.FC<Props> = ({ name, time, caption, image }) => {
     <View style={[styles.card, { backgroundColor: colors.card }]}>
       <View style={styles.header}>
         <Image
-          source={{ uri: 'https://i.pravatar.cc/100' }}
+          source={typeof image === 'string' ? { uri: image } : image}
           style={styles.avatar}
         />
         <View>
@@ -82,17 +85,11 @@ const PostCard: React.FC<Props> = ({ name, time, caption, image }) => {
         </View>
       </View>
 
-      <Text
-        style={[
-          styles.caption,
-          typography.Regular14,
-          { color: colors.Secondary_text_color },
-        ]}
-      >
-        {caption}
-      </Text>
+      <Image
+        source={typeof image === 'string' ? { uri: image } : image}
+        style={styles.postImage}
+      />
 
-      <Image source={{ uri: image }} style={styles.postImage} />
       <View style={styles.footer}>
         <View style={styles.post}>
           <View style={styles.icons}>
@@ -109,6 +106,15 @@ const PostCard: React.FC<Props> = ({ name, time, caption, image }) => {
         </View>
         <SaveIcon />
       </View>
+      <Text
+        style={[
+          styles.caption,
+          typography.Regular14,
+          { color: colors.Secondary_text_color },
+        ]}
+      >
+        {caption}
+      </Text>
     </View>
   );
 };
